@@ -1,0 +1,50 @@
+version: "2"
+services:
+  srv1:
+    image: "node:16-alpine"
+    user: "node"
+    working_dir: "/home/node/app"
+    environment:
+      - SRV=1
+      - PORT=80
+    volumes:
+      - ./server:/home/node/app
+    expose:
+      - 80
+    command: "node index.js"
+  srv2:
+    image: "node:16-alpine"
+    user: "node"
+    working_dir: "/home/node/app"
+    environment:
+      - SRV=2
+      - PORT=80
+    volumes:
+      - ./server:/home/node/app
+    expose:
+      - 80
+    command: "node index.js"
+  srv3:
+    image: "node:16-alpine"
+    user: "node"
+    working_dir: "/home/node/app"
+    environment:
+      - SRV=3
+      - PORT=80
+    volumes:
+      - ./server:/home/node/app
+    expose:
+      - 80
+    command: "node index.js"
+  nginx:
+    image: "nginx:alpine"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+    expose:
+      - 80
+    depends_on:
+      - srv1
+      - srv2
+      - srv3
